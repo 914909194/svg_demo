@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>图片标注</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.14/svg.min.js"></script>
+</head>
+<body>
+  <div id="drawing"></div>
+  <script>
+    var draw = SVG('drawing').size(500, 500);
+    var image = draw.image('path/to/image.jpg').size(500, 500);
+    var rect = draw.rect().attr({ fill: 'none', stroke: 'red', 'stroke-width': 2 });
+    var text = draw.text('标注文字').attr({ fill: 'red', 'font-size': 16 });
+    image.on('mousedown', function(event) {
+      var x = event.offsetX;
+      var y = event.offsetY;
+      rect.attr({ x: x, y: y, width: 0, height: 0 });
+      text.attr({ x: x, y: y });
+    });
+    image.on('mousemove', function(event) {
+      if (event.buttons === 1) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        var width = x - rect.attr('x');
+        var height = y - rect.attr('y');
+        rect.attr({ width: width, height: height });
+      }
+    });
+    image.on('mouseup', function(event) {
+      var x = rect.attr('x');
+      var y = rect.attr('y');
+      var width = rect.attr('width');
+      var height = rect.attr('height');
+      var annotation = draw.group().add(rect).add(text);
+      annotation.data({ x: x, y: y, width: width, height: height });
+    });
+    var annotations = draw.find('g');
+    annotations.each(function() {
+      var annotation = this;
+      var x = annotation.data('x');
+      var y = annotation.data('y');
+      var width = annotation.data('width');
+      var height = annotation.data('height');
+      console.log('x:', x, 'y:', y, 'width:', width, 'height:', height);
+    });
+  </script>
+</body>
+</html>
