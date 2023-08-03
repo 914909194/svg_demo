@@ -1,6 +1,6 @@
 <template>
     <div class="btn-box" style="margin:10px">
-        <el-button type="primary" @click="startDraw">开始画图-{{ data.name }}</el-button>
+        <el-button type="primary" @click="startDraw">开始画图-{{ name }}</el-button>
     </div>
        
     <div id="simpleSquare"></div>
@@ -10,11 +10,12 @@
 import { ref, reactive ,onMounted,toRefs} from 'vue'
 // import { SVG } from "@svgdotjs/svg.js"
 // 引入hooks
-import useTest from '../hooks/useTest7'
+import useTest from '../hooks/useTest6'
 
 let data = reactive({
     name:"陈江"
 })
+let name = "二狗"
 useTest()
 function startDraw(){
     console.log("开始画图",data)
